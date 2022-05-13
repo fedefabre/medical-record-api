@@ -11,6 +11,7 @@ const getPatients = async (req = request, res = response) => {
         Patient.find(query)
             .skip(Number(desde))
             .limit(Number(limite))
+            .populate('doctor', 'nombre')
     ]);
 
     res.json({
