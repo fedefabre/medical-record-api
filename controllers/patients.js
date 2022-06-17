@@ -20,6 +20,16 @@ const getPatients = async (req = request, res = response) => {
     });
 }
 
+const getPatient = async(req, res = response ) => {
+
+    const { id } = req.params;
+    const patient = await Patient.findById( id )
+                            .populate('doctor', 'nombre');
+
+    res.json( patient );
+
+}
+
 const postPatient = async (req, res = response) => {
 
     // TODO: Abstract to a function
@@ -75,5 +85,6 @@ const postPatient = async (req, res = response) => {
 
 module.exports = {
     getPatients,
+    getPatient,
     postPatient
 }

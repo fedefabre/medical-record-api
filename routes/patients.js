@@ -4,9 +4,9 @@ const { check } = require('express-validator');
 const { validarJWT, validarCampos, esAdminRole } = require('../middlewares');
 
 const { postPatient, 
-    getPatients} = require('../controllers/patients');
+    getPatients, getPatient} = require('../controllers/patients');
 
-const { existeCategoriaPorId, existeProductoPorId } = require('../helpers/db-validators');
+const { doesPatientExistById } = require('../helpers/db-validators');
 
 const router = Router();
 
@@ -15,6 +15,12 @@ const router = Router();
  */
 
 router.get('/', getPatients);
+
+router.get('/:id', [
+    check('id', 'It is not a valid Mongo ID').isMongoId(),
+    check('id').custom( doesPatientExistById ),
+    validarCampos,
+], getPatient);
 
 router.post('/', [
     validarJWT,

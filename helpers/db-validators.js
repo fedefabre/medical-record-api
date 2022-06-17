@@ -1,5 +1,5 @@
 const Role = require('../models/role');
-const { Usuario, Categoria, Producto } = require('../models');
+const { Usuario, Categoria, Producto, Patient } = require('../models');
 
 const esRoleValido = async(rol = 'USER_ROLE') => {
 
@@ -52,6 +52,17 @@ const existeProductoPorId = async( id ) => {
 }
 
 /**
+ * Patients
+ */
+const doesPatientExistById = async( id ) => {
+
+    const existPatient = await Patient.findById(id);
+    if ( !existPatient ) {
+        throw new Error(`${ id } doesn't exist`);
+    }
+}
+
+/**
  * Validar colecciones permitidas
  */
 const coleccionesPermitidas = ( coleccion = '', colecciones = []) => {
@@ -70,6 +81,7 @@ module.exports = {
     existeUsuarioPorId,
     existeCategoriaPorId,
     existeProductoPorId,
-    coleccionesPermitidas
+    coleccionesPermitidas,
+    doesPatientExistById
 }
 
