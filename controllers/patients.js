@@ -1,16 +1,17 @@
 const { response, request } = require('express');
 const Patient = require('../models/patient');
+const { isUnique } = require('../helpers/controller-validators');
 
 const getPatients = async (req = request, res = response) => {
 
-    const { limite = 5, desde = 0 } = req.query;
+    const { limit = 100, from = 0 } = req.query;
     const query = {};
 
     const [total, patients] = await Promise.all([
         Patient.countDocuments(query),
         Patient.find(query)
-            .skip(Number(desde))
-            .limit(Number(limite))
+            .skip(Number(from))
+            .limit(Number(limit))
             .populate('doctor', 'nombre')
     ]);
 
@@ -32,8 +33,7 @@ const getPatient = async(req, res = response ) => {
 
 const postPatient = async (req, res = response) => {
 
-    // TODO: Abstract to a function
-    const patientDB = await Patient.findOne({ email: req.body.email });
+    const patientDB = await isUnique(req.body.email);
 
     if (patientDB) {
         return res.status(400).json({

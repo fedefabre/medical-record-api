@@ -7,6 +7,7 @@ const Server = require('./server');
 const Usuario = require('./usuario');
 // Own added
 const Patient = require('./patient');
+const Record = require('./record');
 
 
 module.exports = {
@@ -16,6 +17,7 @@ module.exports = {
     Server,
     Usuario,
     // Own added
-    Patient
+    Patient,
+    Record
 }
 
